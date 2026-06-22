@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -21,12 +22,11 @@ export const metadata: Metadata = {
   description: "Эксклюзивные ювелирные украшения ручной работы из золота и серебра",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru" className={`${cormorant.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <LoadingScreen />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

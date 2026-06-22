@@ -2,20 +2,19 @@
 
 :root {
   --gold: #D4AF37;
-  --gold-light: #E8CC6A;
-  --gold-dark: #B8960C;
-  --bg: #0a0a0a;
-  --bg-card: #111111;
-  --bg-card2: #161616;
-  --text: #f5f0e8;
-  --text-muted: #8a7d6b;
-  --border: #2a2418;
+  --gold-light: #e8cc6a;
+  --gold-dim: rgba(212, 175, 55, 0.25);
+  --bg: #292528;
+  --bg-card: #322f35;
+  --bg-card2: #1e1c20;
+  --text: #f8f5e2;
+  --text-muted: #9a8f80;
+  --border: #3d3840;
 }
 
 @theme inline {
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
-  --color-gold-dark: var(--gold-dark);
   --color-bg: var(--bg);
   --color-card: var(--bg-card);
   --color-card2: var(--bg-card2);
@@ -26,7 +25,7 @@
   --font-body: var(--font-inter);
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -46,36 +45,195 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.02em;
 }
 
+/* ─── Logo shimmer ─── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.logo-shimmer {
+  background: linear-gradient(90deg, var(--gold) 0%, #f8e99a 35%, var(--gold) 60%, #ffe97a 80%, var(--gold) 100%);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 5s linear infinite;
+}
+
+/* ─── Nav underline clip-path ─── */
+.nav-link {
+  position: relative;
+  cursor: pointer;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--gold);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.35s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  clip-path: inset(0 0% 0 0);
+}
+
+/* ─── Gold divider line ─── */
 .gold-line {
   width: 60px;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
+/* ─── Buttons ─── */
 .btn-gold {
+  position: relative;
   display: inline-block;
   padding: 14px 36px;
   border: 1px solid var(--gold);
   color: var(--gold);
   font-family: var(--font-inter), sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.2em;
+  font-size: 11px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  transition: all 0.3s ease;
   cursor: pointer;
   background: transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: color 0.35s ease, box-shadow 0.35s ease;
+  z-index: 0;
 }
-
-.btn-gold:hover {
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: var(--gold);
-  color: #0a0a0a;
+  transform: translateX(-101%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
 }
-
+.btn-gold:hover::before {
+  transform: translateX(0);
+}
+.btn-gold:hover {
+  color: #1a1618;
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.45);
+}
+@keyframes pulse-gold {
+  0%   { box-shadow: 0 0 0 0   rgba(212, 175, 55, 0.7); }
+  70%  { box-shadow: 0 0 0 12px rgba(212, 175, 55, 0);  }
+  100% { box-shadow: 0 0 0 0   rgba(212, 175, 55, 0);   }
+}
+.btn-gold:active {
+  animation: pulse-gold 0.45s ease;
+}
 .btn-gold-filled {
   background: var(--gold);
-  color: #0a0a0a;
+  color: #1a1618;
+}
+.btn-gold-filled::before {
+  background: var(--gold-light);
 }
 
-.btn-gold-filled:hover {
-  background: var(--gold-light);
+/* ─── Product cards ─── */
+.product-card {
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 400ms ease-in-out, box-shadow 400ms ease-in-out;
+  cursor: pointer;
+  background: var(--bg-card);
+}
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 12px 40px rgba(212, 175, 55, 0.18),
+    0 0 0 1px rgba(212, 175, 55, 0.28);
+}
+.product-img-wrap {
+  overflow: hidden;
+  perspective: 900px;
+  border-radius: 20px 20px 0 0;
+}
+.product-img-wrap img {
+  transition: transform 400ms ease-in-out !important;
+  transform-origin: center center;
+}
+.product-card:hover .product-img-wrap img {
+  transform: scale(1.1) rotate(3deg) rotateY(8deg) !important;
+}
+
+/* ─── Gold glow under image ─── */
+.img-glow {
+  box-shadow: 0 4px 32px rgba(212, 175, 55, 0.12);
+  border-radius: 20px 20px 0 0;
+}
+
+/* ─── Section cards (advantages, testimonials) ─── */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  transition: border-color 350ms ease, box-shadow 350ms ease, transform 350ms ease;
+  cursor: default;
+}
+.glass-card:hover {
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1);
+  transform: translateY(-4px);
+}
+
+/* ─── Collection cards ─── */
+.collection-card {
+  border-radius: 24px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.collection-card img {
+  transition: transform 650ms ease;
+}
+.collection-card:hover img {
+  transform: scale(1.08);
+}
+.collection-underline {
+  height: 1px;
+  background: var(--gold);
+  width: 0;
+  transition: width 500ms ease;
+}
+.collection-card:hover .collection-underline {
+  width: 100%;
+}
+
+/* ─── Social icons ─── */
+.social-icon {
+  display: inline-flex;
+  cursor: pointer;
+  transition: transform 350ms ease, color 350ms ease;
+}
+.social-icon:hover {
+  transform: scale(1.2) rotate(8deg);
+  color: var(--gold);
+}
+
+/* ─── Input fields ─── */
+.field-line {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font-inter), sans-serif;
+  transition: border-color 300ms ease;
+  border-radius: 0;
+  outline: none;
+}
+.field-line::placeholder {
+  color: var(--text-muted);
+}
+.field-line:focus {
+  border-bottom-color: var(--gold);
 }

@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { products, formatPrice, categoryLabels } from "@/lib/products";
+import HeroSection from "@/components/HeroSection";
+import AnimatedSection from "@/components/AnimatedSection";
+import ProductCard from "@/components/ProductCard";
 
 const featuredProducts = products.filter((p) => p.featured);
 
@@ -26,26 +29,10 @@ const collections = [
 ];
 
 const advantages = [
-  {
-    icon: "✦",
-    title: "Ручная работа",
-    desc: "Каждое украшение создаётся вручную опытными мастерами с многолетней практикой",
-  },
-  {
-    icon: "◈",
-    title: "Сертификаты",
-    desc: "Все изделия сопровождаются пробирными клеймами и геммологическими сертификатами",
-  },
-  {
-    icon: "◇",
-    title: "Доставка",
-    desc: "Бесплатная доставка по Москве и бережная упаковка для отправки по России",
-  },
-  {
-    icon: "◉",
-    title: "Гарантия 2 года",
-    desc: "Предоставляем гарантию на все изделия и бесплатный ремонт в течение срока",
-  },
+  { icon: "✦", title: "Ручная работа", desc: "Каждое украшение создаётся вручную опытными мастерами с многолетней практикой" },
+  { icon: "◈", title: "Сертификаты", desc: "Все изделия сопровождаются пробирными клеймами и геммологическими сертификатами" },
+  { icon: "◇", title: "Доставка", desc: "Бесплатная доставка по Москве и бережная упаковка для отправки по России" },
+  { icon: "◉", title: "Гарантия 2 года", desc: "Предоставляем гарантию на все изделия и бесплатный ремонт в течение срока" },
 ];
 
 const testimonials = [
@@ -69,84 +56,56 @@ const testimonials = [
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&q=90"
-            alt="Украшения ручной работы"
-            fill
-            className="object-cover opacity-40"
-            priority
-            unoptimized
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/30 to-[#0a0a0a]" />
-        </div>
-
-        <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
-          <p className="text-xs tracking-[0.4em] uppercase text-[var(--gold)] mb-6">Ювелирный дом</p>
-          <h1 className="font-heading text-6xl md:text-8xl font-light text-[var(--cream)] leading-tight mb-6">
-            Украшения<br />
-            <em className="not-italic text-[var(--gold)]">ручной работы</em>
-          </h1>
-          <div className="gold-line mx-auto my-8" />
-          <p className="text-sm text-[var(--text-muted)] tracking-widest leading-relaxed mb-10 max-w-md mx-auto">
-            Каждое изделие — уникальное произведение искусства, созданное с любовью и безупречным мастерством
-          </p>
-          <Link href="/catalog" className="btn-gold">
-            Смотреть коллекцию
-          </Link>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-[10px] tracking-[0.3em] text-[var(--text-muted)] uppercase">Scroll</span>
-          <div className="w-px h-8 bg-gradient-to-b from-[var(--gold)] to-transparent" />
-        </div>
-      </section>
+      <HeroSection />
 
       {/* Collections */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+      <section className="py-28 px-6 max-w-7xl mx-auto">
+        <AnimatedSection className="text-center mb-16">
           <p className="text-xs tracking-[0.3em] uppercase text-[var(--gold)] mb-4">Ассортимент</p>
           <h2 className="font-heading text-5xl font-light text-[var(--cream)]">Наши коллекции</h2>
           <div className="gold-line mx-auto mt-6" />
-        </div>
+        </AnimatedSection>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {collections.map((col) => (
-            <Link key={col.title} href={col.href} className="group relative overflow-hidden aspect-[3/4] block">
-              <Image
-                src={col.image}
-                alt={col.title}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <p className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] mb-2">{col.subtitle}</p>
-                <h3 className="font-heading text-4xl font-light text-[var(--cream)]">{col.title}</h3>
-                <div className="mt-4 h-px w-0 group-hover:w-full bg-[var(--gold)] transition-all duration-500" />
-              </div>
-            </Link>
+          {collections.map((col, i) => (
+            <AnimatedSection key={col.title} delay={i * 0.12}>
+              <Link href={col.href} className="group collection-card block relative aspect-[3/4] cursor-pointer">
+                <Image
+                  src={col.image}
+                  alt={col.title}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#292528]/90 via-[#292528]/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <p className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] mb-2">{col.subtitle}</p>
+                  <h3 className="font-heading text-4xl font-light text-[var(--cream)]">{col.title}</h3>
+                  <div className="collection-underline mt-4" />
+                </div>
+              </Link>
+            </AnimatedSection>
           ))}
         </div>
       </section>
 
       {/* About */}
-      <section className="py-24 bg-[var(--bg-card)]">
+      <section className="py-28" style={{ background: "var(--bg-card)" }}>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="relative aspect-square">
-            <Image
-              src="https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=800&q=80"
-              alt="О нас"
-              fill
-              className="object-cover"
-              unoptimized
-            />
-            <div className="absolute -bottom-6 -right-6 w-48 h-48 border border-[var(--gold)] pointer-events-none" />
-          </div>
-          <div>
+          <AnimatedSection y={30}>
+            <div className="relative aspect-square rounded-2xl overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=800&q=80"
+                alt="О нас"
+                fill
+                className="object-cover"
+                unoptimized
+              />
+              <div className="absolute inset-0 rounded-2xl"
+                style={{ boxShadow: "inset 0 0 0 1px rgba(212,175,55,0.15)" }} />
+            </div>
+          </AnimatedSection>
+          <AnimatedSection delay={0.18} y={30}>
             <p className="text-xs tracking-[0.3em] uppercase text-[var(--gold)] mb-4">О бренде</p>
             <h2 className="font-heading text-5xl font-light text-[var(--cream)] leading-tight mb-6">
               Мастерство,<br />проверенное временем
@@ -161,85 +120,74 @@ export default function HomePage() {
             <Link href="/contacts" className="btn-gold">
               Связаться с нами
             </Link>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* Why Us */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+      {/* Why us */}
+      <section className="py-28 px-6 max-w-7xl mx-auto">
+        <AnimatedSection className="text-center mb-16">
           <p className="text-xs tracking-[0.3em] uppercase text-[var(--gold)] mb-4">Преимущества</p>
           <h2 className="font-heading text-5xl font-light text-[var(--cream)]">Почему мы</h2>
           <div className="gold-line mx-auto mt-6" />
-        </div>
+        </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {advantages.map((a) => (
-            <div key={a.title} className="group p-8 border border-[var(--border)] hover:border-[var(--gold)]/40 transition-colors duration-300 text-center">
-              <div className="text-3xl text-[var(--gold)] mb-4">{a.icon}</div>
-              <h3 className="font-heading text-2xl font-light text-[var(--cream)] mb-3">{a.title}</h3>
-              <p className="text-xs text-[var(--text-muted)] leading-relaxed">{a.desc}</p>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {advantages.map((a, i) => (
+            <AnimatedSection key={a.title} delay={i * 0.1}>
+              <div className="glass-card p-8 text-center h-full">
+                <div className="text-3xl text-[var(--gold)] mb-4">{a.icon}</div>
+                <h3 className="font-heading text-2xl font-light text-[var(--cream)] mb-3">{a.title}</h3>
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">{a.desc}</p>
+              </div>
+            </AnimatedSection>
           ))}
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-24 bg-[var(--bg-card2)]">
+      {/* Featured products */}
+      <section className="py-28" style={{ background: "var(--bg-card2)" }}>
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
+          <AnimatedSection className="text-center mb-16">
             <p className="text-xs tracking-[0.3em] uppercase text-[var(--gold)] mb-4">Избранное</p>
             <h2 className="font-heading text-5xl font-light text-[var(--cream)]">Хиты коллекции</h2>
             <div className="gold-line mx-auto mt-6" />
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredProducts.map((p) => (
-              <Link key={p.id} href={`/product/${p.id}`} className="group">
-                <div className="relative overflow-hidden aspect-square bg-[var(--bg-card)] mb-4">
-                  <Image
-                    src={p.image}
-                    alt={p.name}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    unoptimized
-                  />
-                </div>
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--gold)] mb-1">
-                  {categoryLabels[p.category]}
-                </p>
-                <h3 className="font-heading text-2xl font-light text-[var(--cream)] mb-1">{p.name}</h3>
-                <p className="text-sm text-[var(--text-muted)]">{formatPrice(p.price)}</p>
-              </Link>
+            {featuredProducts.map((p, i) => (
+              <ProductCard key={p.id} product={p} index={i} />
             ))}
           </div>
 
-          <div className="text-center mt-14">
+          <AnimatedSection className="text-center mt-14" delay={0.2}>
             <Link href="/catalog" className="btn-gold">
               Весь каталог
             </Link>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+      <section className="py-28 px-6 max-w-7xl mx-auto">
+        <AnimatedSection className="text-center mb-16">
           <p className="text-xs tracking-[0.3em] uppercase text-[var(--gold)] mb-4">Отзывы</p>
           <h2 className="font-heading text-5xl font-light text-[var(--cream)]">Наши клиенты</h2>
           <div className="gold-line mx-auto mt-6" />
-        </div>
+        </AnimatedSection>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((t) => (
-            <div key={t.name} className="p-8 border border-[var(--border)] flex flex-col gap-6">
-              <div className="font-heading text-5xl text-[var(--gold)]/30">&ldquo;</div>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed italic flex-1">{t.text}</p>
-              <div className="border-t border-[var(--border)] pt-4">
-                <p className="text-sm text-[var(--cream)]">{t.name}</p>
-                <p className="text-xs text-[var(--text-muted)] mt-1">{t.date}</p>
+          {testimonials.map((t, i) => (
+            <AnimatedSection key={t.name} delay={i * 0.12}>
+              <div className="glass-card p-8 flex flex-col gap-6 h-full">
+                <div className="font-heading text-5xl text-[var(--gold)] opacity-30">&ldquo;</div>
+                <p className="text-sm text-[var(--text-muted)] leading-relaxed italic flex-1">{t.text}</p>
+                <div className="border-t border-[var(--border)] pt-4">
+                  <p className="text-sm text-[var(--cream)]">{t.name}</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">{t.date}</p>
+                </div>
               </div>
-            </div>
+            </AnimatedSection>
           ))}
         </div>
       </section>
